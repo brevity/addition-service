@@ -1,22 +1,19 @@
-const net = require('net')
 const {Transform} = require('stream')
-const port = 1234
 
-
-const service = {
+const consumer = {
 	memo: '',
 	evaluate: new Transform({
 		transform(expression, _, done){
 			let str = expression.toString()
 
-			str = service.memo + str
+			str = consumer.memo + str
 
 			const expressions = str.split("\n")
 
 			expressions.map((exp,i)=>{
 
 				if(exp.length < 8 && i + 1 === expressions.length){
-					service.memo = exp
+					consumer.memo = exp
 				}
 
 				const [
@@ -66,10 +63,4 @@ const service = {
 		this.evaluate.pipe(socket)
 	}
 }
-
-; (async () => {
-	net.createServer( socket => {
-		service.connect(socket)
-	}).listen(port)
-})()
-
+module.exports = consumer
