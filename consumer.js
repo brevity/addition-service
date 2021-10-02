@@ -54,11 +54,12 @@ const consumer = {
 	}),
 	connect(socket){
 
-		socket.on('data', d => {
-			console.log(d.toString())
-		})
+		// socket.on('data', d => {
+		// 	console.log(d.toString())
+		// })
 		//this.evaluate.on('data', d=>console.log('--> :',d.toString()))
 
+		socket.pipe(process.stdout)
 		socket.pipe(this.evaluate)
 		this.evaluate.pipe(socket)
 	}
